@@ -1,28 +1,27 @@
-// Ambil parameter ?id=xxxx dari URL
 const urlParams = new URLSearchParams(window.location.search);
 const id = urlParams.get("id");
 
-const output = document.getElementById("output");
+const nameField = document.getElementById("name");
+const idnumField = document.getElementById("idnum");
+const infoField = document.getElementById("info");
+const photoField = document.getElementById("photo");
+const errorField = document.getElementById("error");
 
-// Jika tidak ada ID
 if (!id) {
-    output.innerHTML = "<p style='color:red'>ID tidak ditemukan di URL.</p>";
+    errorField.textContent = "ID tidak ditemukan di URL.";
 } else {
-    // Ambil data JSON berdasarkan id
     fetch(`data/${id}.json`)
         .then(res => {
-            if (!res.ok) throw new Error("Data tidak ditemukan");
+            if (!res.ok) throw new Error("Data tidak ditemukan.");
             return res.json();
         })
         .then(data => {
-            output.innerHTML = `
-                <p><strong>Nama:</strong> ${data.name}</p>
-                <p><strong>ID Number:</strong> ${data.idnum}</p>
-                <p><strong>Informasi:</strong> ${data.info}</p>
-                <img src="${data.photo}" class="photo" alt="Foto">
-            `;
+            nameField.textContent = data.name;
+            idnumField.textContent = data.idnum;
+            infoField.textContent = data.info;
+            photoField.src = data.photo;
         })
         .catch(err => {
-            output.innerHTML = `<p style='color:red'>${err.message}</p>`;
+            errorField.textContent = err.message;
         });
 }
