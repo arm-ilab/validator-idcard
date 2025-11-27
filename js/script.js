@@ -1,18 +1,28 @@
-// Ambil query param ?id=1234
-const params = new URLSearchParams(window.location.search);
-const id = params.get("id") || "353589"; // default 1234
+// Ambil parameter ?id=xxxx dari URL
+const urlParams = new URLSearchParams(window.location.search);
+const id = urlParams.get("id");
 
-// Load data JSON
-fetch(`data/${id}.json`)
-  .then(response => response.json())
-  .then(data => {
-    document.getElementById("name").textContent = data.name;
-    document.getElementById("idnum").textContent = data.idnum;
-    document.getElementById("info").textContent = data.info;
-    document.getElementById("photo").src = data.photo;
-  })
-  .catch(err => {
-    document.getElementById("name").textContent = "Data tidak ditemukan";
-    document.getElementById("idnum").textContent = "";
-    document.getElementById("info").textContent = "";
-  });
+const output = document.getElementById("output");
+
+// Jika tidak ada ID
+if (!id) {
+    output.innerHTML = "<p style='color:red'>ID tidak ditemukan di URL.</p>";
+} else {
+    // Ambil data JSON berdasarkan id
+    fetch(`data/${id}.json`)
+        .then(res => {
+            if (!res.ok) throw new Error("Data tidak ditemukan");
+            return res.json();
+        })
+        .then(data => {
+            output.innerHTML = `
+                <p><strong>Nama:</strong> ${data.name}</p>
+                <p><strong>ID Number:</strong> ${data.idnum}</p>
+                <p><strong>Informasi:</strong> ${data.info}</p>
+                <img src="${data.photo}" class="photo" alt="Foto">
+            `;
+        })
+        .catch(err => {
+            output.innerHTML = `<p style='color:red'>${err.message}</p>`;
+        });
+}
