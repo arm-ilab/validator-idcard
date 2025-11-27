@@ -1,6 +1,6 @@
 // Ambil query param ?id=1234
 const params = new URLSearchParams(window.location.search);
-const id = params.get("id") || "1234"; // default 1234
+const id = params.get("id") || "353589"; // default 1234
 
 // Load data JSON
 fetch(`data/${id}.json`)
