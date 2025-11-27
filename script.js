@@ -19,7 +19,7 @@ if (!id) {
             nameField.textContent = data.name;
             idnumField.textContent = data.idnum;
             infoField.textContent = data.info;
-            photoField.src = data.photo;
+            photoField.src = data.photo; // otomatis ke foto/abc.jpg
         })
         .catch(err => {
             errorField.textContent = err.message;
